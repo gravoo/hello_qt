@@ -3,29 +3,41 @@
 #include <array>
 #include <iterator>
 
-void send_something(int port, std::string message)
-{
-	boost::asio::io_service ios;
+#include <QApplication>
+#include <QWidget>
+#include <QPushButton>
+#include <QVBoxLayout>
+#include <QMessageBox>
+#include "mainwindow.h"
 
-    boost::asio::ip::tcp::endpoint endpoint(boost::asio::ip::tcp::v4(), port);
 
-    boost::asio::ip::tcp::socket socket(ios);
-
-	socket.connect(endpoint);
-
-	std::array<char, 128> buf;
-    std::copy(message.begin(),message.end(),buf.begin());
-	boost::system::error_code error;
-    std::copy(buf.begin(), buf.begin() + message.size(), std::ostream_iterator<char>(std::cout, " "));
-	socket.write_some(boost::asio::buffer(buf, message.size()), error);
-    buf.fill(0);
-    socket.read_some(boost::asio::buffer(buf, message.size()), error);
-    std::copy(buf.begin(), buf.begin() + message.size(), std::ostream_iterator<char>(std::cout, " "));
-    socket.close();
-}
-
-int main()
+int main(int argc, char *argv[])
 {
     std::cout<<"HELLO FROM CLIENT\n";
-    send_something(1990, "hello flowers team");
+    QApplication app(argc, argv);
+
+    MainWindow window;
+    window.show();
+
+    return app.exec();
+    // QApplication app(argc, argv); // Aplikacja Qt
+    // QWidget window;
+    // window.setWindowTitle("Simple QT client");
+    // window.resize(400, 300);
+
+    // QPushButton *button = new QPushButton("Click to send!");
+    // QVBoxLayout *layout = new QVBoxLayout();
+    // layout->addWidget(button);
+    // window.setLayout(layout);
+
+    // // Połączenie przycisku z akcją
+    // QObject::connect(button, &QPushButton::clicked, [&]() {
+    //     QMessageBox::information(&window, "Info", "Button has been clicked!");
+    //     send_something(1990, "hello flowers team");
+    // });
+
+    // // Wyświetlenie głównego okna
+    // window.show();
+    // return app.exec();
+
 }
