@@ -4,7 +4,7 @@
 #include <array>
 #include <iterator>
 
-void send_something(int port, std::string message)
+std::string send_something(int port, std::string message)
 {
 	boost::asio::io_service ios;
 
@@ -20,11 +20,7 @@ void send_something(int port, std::string message)
     std::copy(buf.begin(), buf.begin() + message.size(), std::ostream_iterator<char>(std::cout, " "));
 
 	socket.write_some(boost::asio::buffer(buf, message.size()), error);
-    std::cout<<"MSG HAS BEEN SEND\n";
-
     socket.read_some(boost::asio::buffer(buf, message.size()), error);
-    std::cout<<"RECEIVED\n";
-    std::copy(buf.begin(), buf.begin() + message.size(), std::ostream_iterator<char>(std::cout, " "));
-    std::cout<<"\n";
     socket.close();
+    return std::string(buf.begin(), buf.begin() + message.size());
 }
