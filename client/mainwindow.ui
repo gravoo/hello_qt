@@ -17,26 +17,45 @@
    <layout class="QVBoxLayout" name="verticalLayout_4">
     <item>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="1">
-       <widget class="QPushButton" name="pushButton">
-        <property name="text">
-         <string>Send!</string>
-        </property>
-       </widget>
+      <item row="9" column="0">
+       <layout class="QVBoxLayout" name="verticalLayout_7"/>
       </item>
-      <item row="0" column="0">
+      <item row="7" column="0">
        <widget class="QLineEdit" name="lineEdit">
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="0" colspan="2">
-       <layout class="QVBoxLayout" name="verticalLayout_7">
-        <item>
-         <widget class="QTextBrowser" name="textBrowser"/>
-        </item>
-       </layout>
+      <item row="8" column="0" colspan="2">
+       <widget class="QTextBrowser" name="textBrowser"/>
+      </item>
+      <item row="7" column="1">
+       <widget class="QPushButton" name="sendButton">
+        <property name="text">
+         <string>Send!</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QPushButton" name="connectButton">
+        <property name="text">
+         <string>Connect</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QRadioButton" name="connectionIndicator">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Connected</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>

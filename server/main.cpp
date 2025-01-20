@@ -1,5 +1,6 @@
 #include <cstdlib>
 #include <iostream>
+#include <iterator>
 #include <memory>
 #include <utility>
 #include <boost/asio/ts/buffer.hpp>
@@ -30,6 +31,9 @@ private:
         {
             if (!ec)
             {
+                std::cout<<"RECEIVED DATA\n";
+                std::copy(data_.begin(), data_.begin()+length, std::ostream_iterator<char>(std::cout, " "));
+                std::cout<<"\n";
                 do_write(length);
             }
         });
@@ -43,7 +47,7 @@ private:
         {
             if (!ec)
             {
-            do_read();
+                do_read();
             }
         });
     }
