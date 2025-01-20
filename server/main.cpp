@@ -23,21 +23,21 @@ public:
   }
 
 private:
-  void do_read()
-  {
-    auto self(shared_from_this());
-    socket_.async_read_some(boost::asio::buffer(data_, max_length),
-        [this, self](boost::system::error_code ec, std::size_t length)
-        {
-            if (!ec)
+    void do_read()
+    {
+        auto self(shared_from_this());
+        socket_.async_read_some(boost::asio::buffer(data_, max_length),
+            [this, self](boost::system::error_code ec, std::size_t length)
             {
-                std::cout<<"RECEIVED DATA\n";
-                std::copy(data_.begin(), data_.begin()+length, std::ostream_iterator<char>(std::cout, " "));
-                std::cout<<"\n";
-                do_write(length);
-            }
-        });
-  }
+                if (!ec)
+                {
+                    std::cout<<"RECEIVED DATA\n";
+                    std::copy(data_.begin(), data_.begin()+length, std::ostream_iterator<char>(std::cout, " "));
+                    std::cout<<"\n";
+                    do_write(length);
+                }
+            });
+    }
     void do_write(std::size_t length)
     {
     auto self(shared_from_this());
@@ -92,6 +92,7 @@ int main(int argc, char* argv[])
 {
     boost::asio::io_context io_context;
     server s(io_context, 1990);
+    server ping_server(io_context, 1991);
     io_context.run();
     return 0;
 }
