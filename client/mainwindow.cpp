@@ -29,10 +29,12 @@ void MainWindow::onConnectClicked()
             socket.connect(endpoint);
             ping = std::make_shared<Ping>(ios.get());
             ping->ping_start();
-            ping_thread = std::thread([this](){ios->run();});
+            async_receive_something(socket,
+                [this](std::string text) { ui->textBrowser->insertPlainText(QString(text.c_str()) + QString("\n"));});
+            ios_thread = std::thread([this](){ios->run(); std::cout<<"END!";});
             socket_connected = true;
             ui->connectionIndicator->setChecked(socket_connected);
-            QMessageBox::information(this, "Connected", "Connection started");
+            ui->textBrowser->insertPlainText("Server connected!\n");
         }
         catch(const boost::system::system_error& e)
         {
@@ -58,7 +60,7 @@ void MainWindow::onSendClicked()
             ui->connectionIndicator->setChecked(socket_connected);
             socket.close();
             ios->stop();
-            ping_thread.join();
+            ios_thread.join();
         }
         else if(!socket_connected)
         {
@@ -70,9 +72,6 @@ void MainWindow::onSendClicked()
             {
                 send_something(socket, input.toStdString());
                 ui->lineEdit->clear();
-                auto received = receive_something(socket, input.toStdString());
-                ui->textBrowser->insertPlainText(QString(received.c_str()));
-                ui->textBrowser->insertPlainText(QString("\n"));
             }
         }
     }
@@ -86,9 +85,9 @@ MainWindow::~MainWindow()
 {
     socket.close();
     ios->stop();
-    if(ping_thread.joinable())
+    if(ios_thread.joinable())
     {
-        ping_thread.join();
+        ios_thread.join();
     }
     socket_connected = false;
 }

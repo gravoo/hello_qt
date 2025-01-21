@@ -28,5 +28,5 @@ private:
     boost::asio::ip::tcp::socket socket;
     std::shared_ptr<Ping> ping;
     bool socket_connected;
-    std::thread ping_thread;
+    std::thread ios_thread;
 };
