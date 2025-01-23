@@ -39,7 +39,7 @@ void MainWindow::onConnectClicked()
             ui->sendButton->setEnabled(true);
             ui->disconnectButton->setEnabled(true);
             ui->connectButton->setDisabled(true);
-            ui->textBrowser->insertPlainText("Server connected!\n");
+            ui->textBrowser->append("Server connected!\n");
 
         }
         catch(const boost::system::system_error& e)
@@ -71,7 +71,7 @@ void MainWindow::onDisconnectClicked()
     ui->sendButton->setDisabled(true);
     ui->disconnectButton->setDisabled(true);
     ui->connectButton->setEnabled(true);
-    ui->textBrowser->insertPlainText("Server disconnected!\n");
+    ui->textBrowser->append("Server disconnected!\n");
     std::cout<<"Server disconnected!\n";
 }
 
@@ -80,19 +80,6 @@ void MainWindow::onSendClicked()
     QString input = ui->lineEdit->text();
     try
     {
-        // if(ping->is_timer_expired())
-        // {
-        //     QMessageBox::warning(this, "Warning", "Server connection lost!\n Try reconnecting!");
-        //     socket_connected = false;
-        //     ui->connectionIndicator->setChecked(socket_connected);
-        //     ios->stop();
-        //     if(ios_thread.joinable())
-        //     {
-        //         ios_thread.join();
-        //     }
-        //     ui->sendButton->setDisabled(true);
-        // }
-        // else
         if(!socket_connected)
         {
             QMessageBox::warning(this, "Warning", "Socket not connected!");

@@ -60,9 +60,10 @@ void async_receive_something()
 
             if (length > 0) {
                 auto str = std::string(buf.data(), length);
-                str+="\n";
                 std::cout << "Received data: "<< str << std::endl;
-                textBrowser->append(QString(str.c_str()));
+                QMetaObject::invokeMethod(textBrowser, [this, str]() {
+                    textBrowser->append(QString(str.c_str()));
+                }, Qt::QueuedConnection);
             }
             async_receive_something();
         });
