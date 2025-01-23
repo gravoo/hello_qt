@@ -2,10 +2,10 @@
 #include <iostream>
 #include <thread>
 
-Ping::Ping(boost::asio::io_service *ios) : ios(ios),
+Ping::Ping(std::shared_ptr<boost::asio::io_service> io) : io(io),
     endpoint(boost::asio::ip::tcp::v4(), 1990),
-    socket(*ios),
-    timer(*ios, std::chrono::seconds(5)),
+    socket(*io),
+    timer(*io, std::chrono::seconds(5)),
     timer_expired(false)
 {}
 Ping::~Ping()
@@ -46,7 +46,23 @@ void Ping::do_read()
     socket.async_read_some(boost::asio::buffer(buffer, data.size()),
         [this, self](boost::system::error_code ec, std::size_t length)
         {
-            if (!ec)
+            if (ec)
+            {
+                if (ec == boost::asio::error::would_block)
+                {
+                    std::cout << "No data available on socket." << std::endl;
+                }
+                else if (ec == boost::asio::error::eof)
+                {
+                    std::cout << "Connection closed by peer." << std::endl;
+                }
+                else
+                {
+                    std::cerr << "Error during async receive: " << ec.message() << std::endl;
+                }
+                return;
+            }
+            else
             {
                 for(auto i:buffer)
                 {
@@ -66,9 +82,22 @@ void Ping::do_write()
     boost::asio::async_write(socket, boost::asio::buffer(data, data.size()),
         [this, self](boost::system::error_code ec, std::size_t /*length*/)
         {
-            if (!ec)
+            if (ec)
             {
-                do_read();
+                if (ec == boost::asio::error::would_block)
+                {
+                    std::cout << "No data available on socket." << std::endl;
+                }
+                else if (ec == boost::asio::error::eof)
+                {
+                    std::cout << "Connection closed by peer." << std::endl;
+                }
+                else
+                {
+                    std::cerr << "Error during async receive: " << ec.message() << std::endl;
+                }
+                return;
             }
+            do_read();
         });
 }
