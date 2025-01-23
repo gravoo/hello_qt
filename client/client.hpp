@@ -8,19 +8,16 @@
 class Client : public std::enable_shared_from_this<Client>
 {
 public:
-    Client(
+    explicit Client(
         std::shared_ptr<boost::asio::io_service> io,
         boost::asio::ip::port_type port_num,
-        QPointer<QTextBrowser> textBrowser)
-    : io(io), socket(*io), endpoint(boost::asio::ip::tcp::v4(), 1990), textBrowser(textBrowser)
-    {
-        std::cout<<"construct me!\n";
-    }
-    ~Client()
-    {
-         std::cout<<"DESTRuCT ME!\n";
-        //  qt_handler("BYE\n");
-    }
+        QPointer<QTextBrowser> textBrowser):
+    io(io),
+    socket(*io),
+    endpoint(boost::asio::ip::tcp::v4(), 1990),
+    textBrowser(textBrowser)
+    {}
+    ~Client() = default;
 
 void connect()
 {
