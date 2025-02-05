@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget* parent)
     ui->lineEdit->setPlaceholderText("Enter what you want send to server here...");
     ui->sendButton->setDisabled(true);
     ui->disconnectButton->setDisabled(true);
+    ui->lineEdit->setDisabled(true);
     textBrowser = QPointer<QTextBrowser>(ui->textBrowser);
     connection = std::make_shared<Connection>(textBrowser);
     connect(ui->connectButton, &QPushButton::clicked, this, &MainWindow::onConnectClicked);
@@ -33,6 +34,7 @@ void MainWindow::onConnectClicked()
             ui->sendButton->setEnabled(true);
             ui->disconnectButton->setEnabled(true);
             ui->connectButton->setDisabled(true);
+            ui->lineEdit->setEnabled(true);
             QMessageBox::information(this, "Info", "Server connected!");
         }
         catch (const boost::system::system_error& e)
@@ -56,6 +58,7 @@ void MainWindow::onDisconnectClicked()
     ui->sendButton->setDisabled(true);
     ui->disconnectButton->setDisabled(true);
     ui->connectButton->setEnabled(true);
+    ui->lineEdit->setDisabled(true);
 }
 
 void MainWindow::onSendClicked()
