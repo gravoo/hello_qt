@@ -1,29 +1,34 @@
 #pragma once
-#include <QMainWindow>
-#include <memory>
-#include <boost/asio.hpp>
-#include "ping_client.hpp"
-#include <thread>
 #include "client.hpp"
+#include "ping_client.hpp"
+#include <QMainWindow>
+#include <boost/asio.hpp>
+#include <memory>
+#include <thread>
 
-namespace Ui {
+namespace Ui
+{
 class MainWindow;
 }
 
-class MainWindow : public QMainWindow, public std::enable_shared_from_this<Client>
+class MainWindow
+  : public QMainWindow
+  , public std::enable_shared_from_this<Client>
 {
     Q_OBJECT
 
-public:
-    explicit MainWindow(QWidget *parent = nullptr);
+  public:
+    explicit MainWindow(QWidget* parent = nullptr);
     ~MainWindow();
-private slots:
+  private slots:
     void onConnectClicked();
     void onDisconnectClicked();
     void onSendClicked();
-private:
+
+  private:
     void do_read();
     void do_write(std::size_t length);
+    void display_warning(bool status, std::string s);
     std::unique_ptr<Ui::MainWindow> ui;
     std::shared_ptr<boost::asio::io_context> ios;
     std::shared_ptr<Ping> ping;
