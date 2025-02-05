@@ -1,10 +1,9 @@
 #pragma once
 #include "client.hpp"
-#include "ping_client.hpp"
+#include "connection.hpp"
 #include <QMainWindow>
 #include <boost/asio.hpp>
 #include <memory>
-#include <thread>
 
 namespace Ui
 {
@@ -29,11 +28,8 @@ class MainWindow
     void do_read();
     void do_write(std::size_t length);
     void display_warning(bool status, std::string s);
+    std::shared_ptr<Connection> connection;
     std::unique_ptr<Ui::MainWindow> ui;
     std::shared_ptr<boost::asio::io_context> ios;
-    std::shared_ptr<Ping> ping;
-    std::shared_ptr<Client> client;
-    bool socket_connected;
-    std::thread ios_thread;
     QPointer<QTextBrowser> textBrowser;
 };
