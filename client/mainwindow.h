@@ -44,7 +44,7 @@ class MainWindow
     QHBoxLayout* connection_layout;
     QHBoxLayout* user_input_layout;
     QHBoxLayout* output_layout;
-    QWidget* tab1;
-    QWidget* tab2;
+    QWidget* connection_tab;
+    QWidget* processes_tab;
     QPointer<QTextBrowser> textBrowser;
 };

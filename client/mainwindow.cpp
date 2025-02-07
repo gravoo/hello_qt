@@ -13,8 +13,8 @@ MainWindow::MainWindow(QWidget* parent)
     tabWidget = new QTabWidget(this);
     setCentralWidget(tabWidget);
 
-    tab1 = new QWidget();
-    tab2 = new QWidget();
+    connection_tab = new QWidget();
+    processes_tab = new QWidget();
 
     mainLayout = new QVBoxLayout();
     connection_layout = new QHBoxLayout();
@@ -53,14 +53,14 @@ MainWindow::MainWindow(QWidget* parent)
     mainLayout->addLayout(connection_layout);
     mainLayout->addLayout(user_input_layout);
     mainLayout->addLayout(output_layout);
-    tab1->setLayout(mainLayout);
+    connection_tab->setLayout(mainLayout);
 
     QVBoxLayout* layout2 = new QVBoxLayout();
     layout2->addWidget(new QLabel("Nothing special here yet."));
-    tab2->setLayout(layout2);
+    processes_tab->setLayout(layout2);
 
-    tabWidget->addTab(tab1, "Tab 1");
-    tabWidget->addTab(tab2, "Tab 2");
+    tabWidget->addTab(connection_tab, "Connection");
+    tabWidget->addTab(processes_tab, "Processes");
 
     setWindowTitle("Client");
     resize(400, 300);
