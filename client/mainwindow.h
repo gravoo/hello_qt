@@ -15,9 +15,7 @@ namespace Ui
 class MainWindow;
 }
 
-class MainWindow
-  : public QMainWindow
-  , public std::enable_shared_from_this<Client>
+class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
@@ -30,10 +28,8 @@ class MainWindow
     void onSendClicked();
 
   private:
-    void do_read();
-    void do_write(std::size_t length);
     void display_warning(bool status, std::string s);
-    std::shared_ptr<Connection> connection;
+    Connection connection;
     QTabWidget* tabWidget;
     QPushButton* connectButton;
     QPushButton* sendButton;
@@ -46,5 +42,5 @@ class MainWindow
     QHBoxLayout* output_layout;
     QWidget* connection_tab;
     QWidget* processes_tab;
-    QPointer<QTextBrowser> textBrowser;
+    QTextBrowser* textBrowser;
 };

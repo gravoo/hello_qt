@@ -38,6 +38,7 @@ MainWindow::MainWindow(QWidget* parent)
     lineEdit = new QLineEdit("");
     lineEdit->setObjectName("lineEdit");
     lineEdit->setPlaceholderText("Enter what you want send to server here...");
+
     sendButton = new QPushButton("Send");
     sendButton->setObjectName("sendButton");
     sendButton->setDisabled(true);
@@ -46,7 +47,7 @@ MainWindow::MainWindow(QWidget* parent)
     user_input_layout->addWidget(sendButton);
 
     output_layout = new QHBoxLayout();
-    textBrowser = QPointer<QTextBrowser>(new QTextBrowser());
+    textBrowser = new QTextBrowser();
     textBrowser->setObjectName("textBrowser");
     output_layout->addWidget(textBrowser);
 
@@ -72,17 +73,16 @@ MainWindow::MainWindow(QWidget* parent)
     connect(connectButton, &QPushButton::clicked, this, &MainWindow::onConnectClicked);
     connect(disconnectButton, &QPushButton::clicked, this, &MainWindow::onDisconnectClicked);
     connect(sendButton, &QPushButton::clicked, this, &MainWindow::onSendClicked);
-
-    connection = std::make_shared<Connection>(textBrowser);
 }
 
 void MainWindow::onConnectClicked()
 {
-    if (!connection->is_connected())
+    if (!connection.is_connected())
     {
         try
         {
-            connection->connect();
+            connection = Connection(QPointer<QTextBrowser>(textBrowser));
+            connection.connect();
             connectionIndicator->setChecked(true);
             sendButton->setEnabled(true);
             disconnectButton->setEnabled(true);
@@ -92,7 +92,7 @@ void MainWindow::onConnectClicked()
         }
         catch (const boost::system::system_error& e)
         {
-            connection->disconnect();
+            connection.disconnect();
             QMessageBox::warning(this, "Warning", "Can't connect to server!");
             qDebug() << "Error code:" << e.what();
         }
@@ -106,7 +106,7 @@ void MainWindow::onConnectClicked()
 void MainWindow::onDisconnectClicked()
 {
     QMessageBox::information(this, "Info", "Server disconnected!");
-    connection->disconnect();
+    connection.disconnect();
     connectionIndicator->setChecked(false);
     sendButton->setDisabled(true);
     disconnectButton->setDisabled(true);
@@ -119,7 +119,7 @@ void MainWindow::onSendClicked()
     QString input = lineEdit->text();
     try
     {
-        if (!connection->is_connected())
+        if (!connection.is_connected())
         {
             QMessageBox::warning(this, "Warning", "Socket not connected!");
         }
@@ -127,7 +127,7 @@ void MainWindow::onSendClicked()
         {
             if (!input.isEmpty())
             {
-                connection->send(input.toStdString());
+                connection.send(input.toStdString());
                 lineEdit->clear();
             }
         }
