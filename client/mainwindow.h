@@ -28,7 +28,6 @@ class MainWindow : public QMainWindow
     void onSendClicked();
 
   private:
-    void display_warning(bool status, std::string s);
     Connection connection;
     QTabWidget* tabWidget;
     QPushButton* connectButton;
