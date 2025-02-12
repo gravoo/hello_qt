@@ -11,11 +11,11 @@ MainWindow::MainWindow(QWidget* parent)
   : QMainWindow(parent)
 {
     connection_tab = std::make_unique<Connection_tab>();
-    QVBoxLayout* layout2 = new QVBoxLayout();
+    QVBoxLayout* processes_layout = new QVBoxLayout();
     processes_tab = new QWidget();
 
-    layout2->addWidget(new QLabel("Nothing special here yet."));
-    processes_tab->setLayout(layout2);
+    processes_layout->addWidget(new QLabel("Nothing special here yet."));
+    processes_tab->setLayout(processes_layout);
     connection_tab->get_main_widget()->addTab(processes_tab, "Processes");
 
     setCentralWidget(connection_tab->get_main_widget());

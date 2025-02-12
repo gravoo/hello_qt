@@ -4,9 +4,7 @@ Connection_tab::Connection_tab(QWidget* parent)
   : QWidget(parent)
 {
     tabWidget = new QTabWidget();
-
     connection_tab = new QWidget();
-    processes_tab = new QWidget();
 
     mainLayout = new QVBoxLayout();
     connection_layout = new QHBoxLayout();

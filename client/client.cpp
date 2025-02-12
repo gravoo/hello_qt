@@ -6,7 +6,7 @@ Client::Client(std::shared_ptr<boost::asio::io_service> io,
                QPointer<QTextBrowser> textBrowser)
   : io(io)
   , socket(*io)
-  , endpoint(boost::asio::ip::tcp::v4(), 1990)
+  , endpoint(boost::asio::ip::tcp::v4(), port_num)
   , textBrowser(textBrowser)
 {
 }

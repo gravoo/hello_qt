@@ -42,6 +42,5 @@ class Connection_tab : public QWidget
     QHBoxLayout* user_input_layout;
     QHBoxLayout* output_layout;
     QWidget* connection_tab;
-    QWidget* processes_tab;
     QTextBrowser* textBrowser;
 };
