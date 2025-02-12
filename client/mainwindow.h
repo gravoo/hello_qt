@@ -1,13 +1,7 @@
 #pragma once
-#include "client.hpp"
 #include "connection.hpp"
-#include <QHBoxLayout>
-#include <QLineEdit>
+#include "connection_tab.h"
 #include <QMainWindow>
-#include <QPushButton>
-#include <QRadioButton>
-#include <QVBoxLayout>
-#include <boost/asio.hpp>
 #include <memory>
 
 namespace Ui
@@ -29,17 +23,6 @@ class MainWindow : public QMainWindow
 
   private:
     Connection connection;
-    QTabWidget* tabWidget;
-    QPushButton* connectButton;
-    QPushButton* sendButton;
-    QRadioButton* connectionIndicator;
-    QPushButton* disconnectButton;
-    QLineEdit* lineEdit;
-    QVBoxLayout* mainLayout;
-    QHBoxLayout* connection_layout;
-    QHBoxLayout* user_input_layout;
-    QHBoxLayout* output_layout;
-    QWidget* connection_tab;
     QWidget* processes_tab;
-    QTextBrowser* textBrowser;
+    std::unique_ptr<Connection_tab> connection_tab;
 };
