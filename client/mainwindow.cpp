@@ -11,12 +11,14 @@
 MainWindow::MainWindow(QWidget* parent)
   : QMainWindow(parent)
 {
-    connection_tab = std::make_unique<Connection_tab>();
-    processes_tab = std::make_unique<Processes_tab>();
+    main_tab_widget = new QTabWidget();
+    connection_tab = std::make_unique<Connection_tab>(main_tab_widget);
+    processes_tab = std::make_unique<Processes_tab>(main_tab_widget);
 
-    connection_tab->get_main_widget()->addTab(processes_tab->get_tab_widget(), "Processes");
+    main_tab_widget->addTab(connection_tab->get_tab_widget(), "Connection");
+    main_tab_widget->addTab(processes_tab->get_tab_widget(), "Processes");
 
-    setCentralWidget(connection_tab->get_main_widget());
+    setCentralWidget(main_tab_widget);
     setWindowTitle("Client");
     resize(400, 300);
     connection_tab->disable_communication_ui();

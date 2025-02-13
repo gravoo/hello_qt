@@ -3,11 +3,9 @@
 Connection_tab::Connection_tab(QWidget* parent)
   : QWidget(parent)
 {
-    tabWidget = new QTabWidget();
-    connection_tab = new QWidget();
-
-    mainLayout = new QVBoxLayout();
-    connection_layout = new QHBoxLayout();
+    tab_widget = new QWidget(parent);
+    tab_layout = new QVBoxLayout(parent);
+    connection_layout = new QHBoxLayout(parent);
     connectButton = new QPushButton("Connect");
     connectButton->setObjectName("connectButton");
 
@@ -24,7 +22,7 @@ Connection_tab::Connection_tab(QWidget* parent)
     connection_layout->addWidget(disconnectButton);
     connection_layout->addWidget(connectionIndicator);
 
-    user_input_layout = new QHBoxLayout();
+    user_input_layout = new QHBoxLayout(parent);
     lineEdit = new QLineEdit("");
     lineEdit->setObjectName("lineEdit");
     lineEdit->setPlaceholderText("Enter what you want send to server here...");
@@ -36,24 +34,23 @@ Connection_tab::Connection_tab(QWidget* parent)
     user_input_layout->addWidget(lineEdit);
     user_input_layout->addWidget(sendButton);
 
-    output_layout = new QHBoxLayout();
-    textBrowser = new QTextBrowser();
+    output_layout = new QHBoxLayout(parent);
+    textBrowser = new QTextBrowser(parent);
     textBrowser->setObjectName("textBrowser");
     output_layout->addWidget(textBrowser);
 
-    mainLayout->addLayout(connection_layout);
-    mainLayout->addLayout(user_input_layout);
-    mainLayout->addLayout(output_layout);
-    connection_tab->setLayout(mainLayout);
-    tabWidget->addTab(connection_tab, "Connection");
+    tab_layout->addLayout(connection_layout);
+    tab_layout->addLayout(user_input_layout);
+    tab_layout->addLayout(output_layout);
+    tab_widget->setLayout(tab_layout);
 
     connect(connectButton, &QPushButton::clicked, this, &Connection_tab::onConnectionButtonClicked);
     connect(disconnectButton, &QPushButton::clicked, this, &Connection_tab::onDisconnectionButtonClicked);
     connect(sendButton, &QPushButton::clicked, this, &Connection_tab::onSendButtonClicked);
 }
-QTabWidget* Connection_tab::get_main_widget() { return tabWidget; }
 QTextBrowser* Connection_tab::get_text_browser() { return textBrowser; }
 QLineEdit* Connection_tab::get_line_edit() { return lineEdit; }
+QWidget* Connection_tab::get_tab_widget() { return tab_widget; }
 void Connection_tab::disable_communication_ui()
 {
     sendButton->setDisabled(true);

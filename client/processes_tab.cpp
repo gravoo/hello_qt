@@ -2,8 +2,8 @@
 #include <QLabel>
 Processes_tab::Processes_tab(QWidget* parent)
 {
-    tab_layout = new QVBoxLayout();
-    tab_widget = new QWidget();
+    tab_widget = new QWidget(parent);
+    tab_layout = new QVBoxLayout(parent);
 
     tab_layout->addWidget(new QLabel("Nothing special here yet."));
     tab_widget->setLayout(tab_layout);
