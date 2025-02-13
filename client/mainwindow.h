@@ -23,6 +23,7 @@ class MainWindow : public QMainWindow
 
   private:
     Connection connection;
+    QTabWidget* main_tab_widget;
     std::unique_ptr<Connection_tab> connection_tab;
     std::unique_ptr<Processes_tab> processes_tab;
 };

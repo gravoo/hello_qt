@@ -15,11 +15,11 @@ class Connection_tab : public QWidget
 
   public:
     explicit Connection_tab(QWidget* parent = nullptr);
-    QTabWidget* get_main_widget();
     void disable_communication_ui();
     void enable_communication_ui();
     QTextBrowser* get_text_browser();
     QLineEdit* get_line_edit();
+    QWidget* get_tab_widget();
   signals:
     void connectionButtonClicked();
     void disconnectionButtonClicked();
@@ -31,16 +31,15 @@ class Connection_tab : public QWidget
     void onSendButtonClicked();
 
   private:
-    QTabWidget* tabWidget;
+    QWidget* tab_widget;
+    QVBoxLayout* tab_layout;
+    QHBoxLayout* connection_layout;
+    QHBoxLayout* user_input_layout;
+    QHBoxLayout* output_layout;
     QPushButton* connectButton;
     QPushButton* sendButton;
     QRadioButton* connectionIndicator;
     QPushButton* disconnectButton;
     QLineEdit* lineEdit;
-    QVBoxLayout* mainLayout;
-    QHBoxLayout* connection_layout;
-    QHBoxLayout* user_input_layout;
-    QHBoxLayout* output_layout;
-    QWidget* connection_tab;
     QTextBrowser* textBrowser;
 };
