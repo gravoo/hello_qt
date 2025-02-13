@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "processes_tab.h"
 #include <QDebug>
 #include <QLabel>
 #include <QMessageBox>
@@ -11,12 +12,9 @@ MainWindow::MainWindow(QWidget* parent)
   : QMainWindow(parent)
 {
     connection_tab = std::make_unique<Connection_tab>();
-    QVBoxLayout* processes_layout = new QVBoxLayout();
-    processes_tab = new QWidget();
+    processes_tab = std::make_unique<Processes_tab>();
 
-    processes_layout->addWidget(new QLabel("Nothing special here yet."));
-    processes_tab->setLayout(processes_layout);
-    connection_tab->get_main_widget()->addTab(processes_tab, "Processes");
+    connection_tab->get_main_widget()->addTab(processes_tab->get_tab_widget(), "Processes");
 
     setCentralWidget(connection_tab->get_main_widget());
     setWindowTitle("Client");
