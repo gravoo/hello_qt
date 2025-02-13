@@ -1,11 +1,12 @@
 #include "connection_tab.h"
+#include <qwidget.h>
 
 Connection_tab::Connection_tab(QWidget* parent)
   : QWidget(parent)
 {
-    tab_widget = new QWidget(parent);
-    tab_layout = new QVBoxLayout(parent);
-    connection_layout = new QHBoxLayout(parent);
+    tab_widget = new QWidget();
+    tab_layout = new QVBoxLayout();
+    connection_layout = new QHBoxLayout();
     connectButton = new QPushButton("Connect");
     connectButton->setObjectName("connectButton");
 
@@ -22,7 +23,7 @@ Connection_tab::Connection_tab(QWidget* parent)
     connection_layout->addWidget(disconnectButton);
     connection_layout->addWidget(connectionIndicator);
 
-    user_input_layout = new QHBoxLayout(parent);
+    user_input_layout = new QHBoxLayout();
     lineEdit = new QLineEdit("");
     lineEdit->setObjectName("lineEdit");
     lineEdit->setPlaceholderText("Enter what you want send to server here...");
@@ -34,8 +35,8 @@ Connection_tab::Connection_tab(QWidget* parent)
     user_input_layout->addWidget(lineEdit);
     user_input_layout->addWidget(sendButton);
 
-    output_layout = new QHBoxLayout(parent);
-    textBrowser = new QTextBrowser(parent);
+    output_layout = new QHBoxLayout();
+    textBrowser = new QTextBrowser();
     textBrowser->setObjectName("textBrowser");
     output_layout->addWidget(textBrowser);
 

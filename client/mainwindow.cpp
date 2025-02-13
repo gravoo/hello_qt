@@ -12,8 +12,8 @@ MainWindow::MainWindow(QWidget* parent)
   : QMainWindow(parent)
 {
     main_tab_widget = new QTabWidget();
-    connection_tab = std::make_unique<Connection_tab>(main_tab_widget);
-    processes_tab = std::make_unique<Processes_tab>(main_tab_widget);
+    connection_tab = std::make_unique<Connection_tab>(this);
+    processes_tab = std::make_unique<Processes_tab>(this);
 
     main_tab_widget->addTab(connection_tab->get_tab_widget(), "Connection");
     main_tab_widget->addTab(processes_tab->get_tab_widget(), "Processes");
