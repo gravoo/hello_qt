@@ -1,18 +1,15 @@
 #pragma once
-#include "client.hpp"
 #include "connection.hpp"
+#include "connection_tab.h"
+#include "processes_tab.h"
 #include <QMainWindow>
-#include <boost/asio.hpp>
 #include <memory>
-
 namespace Ui
 {
 class MainWindow;
 }
 
-class MainWindow
-  : public QMainWindow
-  , public std::enable_shared_from_this<Client>
+class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
@@ -25,11 +22,8 @@ class MainWindow
     void onSendClicked();
 
   private:
-    void do_read();
-    void do_write(std::size_t length);
-    void display_warning(bool status, std::string s);
-    std::shared_ptr<Connection> connection;
-    std::unique_ptr<Ui::MainWindow> ui;
-    std::shared_ptr<boost::asio::io_context> ios;
-    QPointer<QTextBrowser> textBrowser;
+    Connection connection;
+    QTabWidget* main_tab_widget;
+    std::unique_ptr<Connection_tab> connection_tab;
+    std::unique_ptr<Processes_tab> processes_tab;
 };

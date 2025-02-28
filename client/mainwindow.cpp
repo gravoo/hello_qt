@@ -1,6 +1,7 @@
 #include "mainwindow.h"
-#include "./ui_mainwindow.h"
+#include "processes_tab.h"
 #include <QDebug>
+#include <QLabel>
 #include <QMessageBox>
 #include <QtWidgets/QTextBrowser>
 #include <memory>
@@ -9,37 +10,38 @@
 
 MainWindow::MainWindow(QWidget* parent)
   : QMainWindow(parent)
-  , ui(std::make_unique<Ui::MainWindow>())
 {
-    ui->setupUi(this);
-    ui->lineEdit->setPlaceholderText("Enter what you want send to server here...");
-    ui->sendButton->setDisabled(true);
-    ui->disconnectButton->setDisabled(true);
-    ui->lineEdit->setDisabled(true);
-    textBrowser = QPointer<QTextBrowser>(ui->textBrowser);
-    connection = std::make_shared<Connection>(textBrowser);
-    connect(ui->connectButton, &QPushButton::clicked, this, &MainWindow::onConnectClicked);
-    connect(ui->disconnectButton, &QPushButton::clicked, this, &MainWindow::onDisconnectClicked);
-    connect(ui->sendButton, &QPushButton::clicked, this, &MainWindow::onSendClicked);
+    main_tab_widget = new QTabWidget();
+    connection_tab = std::make_unique<Connection_tab>(this);
+    processes_tab = std::make_unique<Processes_tab>(this);
+
+    main_tab_widget->addTab(connection_tab->get_tab_widget(), "Connection");
+    main_tab_widget->addTab(processes_tab->get_tab_widget(), "Processes");
+
+    setCentralWidget(main_tab_widget);
+    setWindowTitle("Client");
+    resize(400, 300);
+    connection_tab->disable_communication_ui();
+
+    connect(connection_tab.get(), &Connection_tab::connectionButtonClicked, this, &MainWindow::onConnectClicked);
+    connect(connection_tab.get(), &Connection_tab::disconnectionButtonClicked, this, &MainWindow::onDisconnectClicked);
+    connect(connection_tab.get(), &Connection_tab::sendButtonClicked, this, &MainWindow::onSendClicked);
 }
 
 void MainWindow::onConnectClicked()
 {
-    if (!connection->is_connected())
+    if (!connection.is_connected())
     {
         try
         {
-            connection->connect();
-            ui->connectionIndicator->setChecked(true);
-            ui->sendButton->setEnabled(true);
-            ui->disconnectButton->setEnabled(true);
-            ui->connectButton->setDisabled(true);
-            ui->lineEdit->setEnabled(true);
+            connection = Connection(QPointer<QTextBrowser>(connection_tab->get_text_browser()));
+            connection.connect();
+            connection_tab->enable_communication_ui();
             QMessageBox::information(this, "Info", "Server connected!");
         }
         catch (const boost::system::system_error& e)
         {
-            connection->disconnect();
+            connection.disconnect();
             QMessageBox::warning(this, "Warning", "Can't connect to server!");
             qDebug() << "Error code:" << e.what();
         }
@@ -53,20 +55,16 @@ void MainWindow::onConnectClicked()
 void MainWindow::onDisconnectClicked()
 {
     QMessageBox::information(this, "Info", "Server disconnected!");
-    connection->disconnect();
-    ui->connectionIndicator->setChecked(false);
-    ui->sendButton->setDisabled(true);
-    ui->disconnectButton->setDisabled(true);
-    ui->connectButton->setEnabled(true);
-    ui->lineEdit->setDisabled(true);
+    connection_tab->disable_communication_ui();
+    connection.disconnect();
 }
 
 void MainWindow::onSendClicked()
 {
-    QString input = ui->lineEdit->text();
+    QString input = connection_tab->get_line_edit()->text();
     try
     {
-        if (!connection->is_connected())
+        if (!connection.is_connected())
         {
             QMessageBox::warning(this, "Warning", "Socket not connected!");
         }
@@ -74,8 +72,8 @@ void MainWindow::onSendClicked()
         {
             if (!input.isEmpty())
             {
-                connection->send(input.toStdString());
-                ui->lineEdit->clear();
+                connection.send(input.toStdString());
+                connection_tab->get_line_edit()->clear();
             }
         }
     }
